@@ -36,7 +36,8 @@ const AnswerReferencePanel: React.FC<AnswerReferencePanelProps> = ({
 
   return (
     <div
-      className="fixed inset-0 bg-gray-900 bg-opacity-40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      style={{ backgroundColor: 'rgba(128, 128, 128, 0.3)' }}
       onClick={onClose}
     >
       <div
