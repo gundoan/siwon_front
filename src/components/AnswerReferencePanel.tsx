@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Question } from '../types';
 
 interface AnswerReferencePanelProps {
@@ -10,6 +10,8 @@ const AnswerReferencePanel: React.FC<AnswerReferencePanelProps> = ({
   question,
   onClose,
 }) => {
+  const [showToast, setShowToast] = useState(false);
+
   if (!question) return null;
 
   // AI가 추천하는 핵심 답변 (실제로는 LLM으로 생성)
@@ -24,9 +26,23 @@ const AnswerReferencePanel: React.FC<AnswerReferencePanelProps> = ({
 
   const recommendedAnswer = getRecommendedAnswer();
 
+  const handleCopy = () => {
+    if (recommendedAnswer) {
+      navigator.clipboard.writeText(recommendedAnswer.content);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000);
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+    <div
+      className="fixed inset-0 bg-gray-900 bg-opacity-40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="bg-channel-purple text-white p-6">
           <div className="flex justify-between items-start">
@@ -88,7 +104,7 @@ const AnswerReferencePanel: React.FC<AnswerReferencePanelProps> = ({
 
           {/* AI 추천 답변 */}
           {recommendedAnswer && (
-            <div className="bg-gradient-to-r from-channel-purple-light to-channel-purple bg-opacity-10 rounded-lg p-6 border-2 border-channel-purple">
+            <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-6 border-2 border-channel-purple">
               <div className="flex items-center gap-2 mb-3">
                 <div className="bg-channel-purple text-white px-3 py-1 rounded-full text-sm font-bold">
                   AI 추천
@@ -123,18 +139,22 @@ const AnswerReferencePanel: React.FC<AnswerReferencePanelProps> = ({
           </button>
           <button
             className="px-6 py-2 bg-channel-purple text-white rounded-lg hover:bg-opacity-90 transition-colors font-medium"
-            onClick={() => {
-              // 복사 기능 구현
-              if (recommendedAnswer) {
-                navigator.clipboard.writeText(recommendedAnswer.content);
-                alert('추천 답변이 클립보드에 복사되었습니다!');
-              }
-            }}
+            onClick={handleCopy}
           >
             추천 답변 복사
           </button>
         </div>
       </div>
+
+      {/* Toast Message */}
+      {showToast && (
+        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-fade-in">
+          <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <span className="font-medium">답변이 복사되었습니다</span>
+        </div>
+      )}
     </div>
   );
 };

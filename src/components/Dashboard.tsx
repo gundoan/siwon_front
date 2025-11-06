@@ -31,6 +31,11 @@ const Dashboard: React.FC = () => {
       .sort((a, b) => b.count - a.count); // 카운트 높은 순으로 정렬
   }, [selectedTimeWindow]);
 
+  // 표시용 질문 리스트 (최대 10개)
+  const displayQuestions = useMemo(() => {
+    return filteredQuestions.slice(0, 10);
+  }, [filteredQuestions]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Header */}
@@ -119,7 +124,7 @@ const Dashboard: React.FC = () => {
         {/* 질문 리스트 */}
         <div className="mb-8">
           <QuestionList
-            questions={filteredQuestions}
+            questions={displayQuestions}
             onQuestionClick={setSelectedQuestion}
             selectedQuestionId={selectedQuestion?.id}
           />
@@ -130,6 +135,7 @@ const Dashboard: React.FC = () => {
           <CategoryManager
             categories={mockCategories}
             questions={filteredQuestions}
+            onQuestionClick={setSelectedQuestion}
           />
         </div>
       </main>

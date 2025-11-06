@@ -4,11 +4,13 @@ import type { Category, Question } from '../types';
 interface CategoryManagerProps {
   categories: Category[];
   questions: Question[];
+  onQuestionClick: (question: Question) => void;
 }
 
 const CategoryManager: React.FC<CategoryManagerProps> = ({
   categories,
   questions,
+  onQuestionClick,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
@@ -89,7 +91,8 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
             {filteredQuestions.map((question) => (
               <div
                 key={question.id}
-                className="p-3 bg-white rounded border border-gray-200"
+                onClick={() => onQuestionClick(question)}
+                className="p-3 bg-white rounded border border-gray-200 cursor-pointer hover:border-channel-purple hover:shadow-sm transition-all"
               >
                 <div className="flex justify-between items-center">
                   <p className="text-gray-700">{question.content}</p>
