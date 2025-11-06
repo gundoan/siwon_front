@@ -58,10 +58,10 @@ const AnswerReferencePanel: React.FC<AnswerReferencePanelProps> = ({
             </button>
           </div>
           <div className="mt-4 flex items-center gap-4 text-sm">
-            <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">
+            <span className="bg-white px-3 py-1 rounded-full text-channel-purple font-semibold">
               총 {question.count}명 문의
             </span>
-            <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">
+            <span className="bg-white px-3 py-1 rounded-full text-channel-purple font-semibold">
               {question.answers.length}개 답변 참고
             </span>
           </div>
